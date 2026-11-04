@@ -47,3 +47,5 @@ next-env.d.ts
 *.swp
 *.swo
 Thumbs.db
+
+.vercel
