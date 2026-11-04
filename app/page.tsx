@@ -2,14 +2,14 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Lock, User, ArrowRight, ShieldCheck, AlertCircle, Loader2 } from "lucide-react";
+import { Lock, User, ArrowRight, AlertCircle, Loader2 } from "lucide-react";
 import Cookies from "js-cookie";
 import api from "@/lib/api";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [username, setUsername] = useState("admin");
-  const [password, setPassword] = useState("pch2026");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -30,14 +30,7 @@ export default function LoginPage() {
       router.push("/claims");
     } catch (err: any) {
       console.error("Login failed:", err);
-      // Fallback for demo mode
-      if (username.trim().toLowerCase() === "admin") {
-        Cookies.set("pch_token", "demo-token", { expires: 1 });
-        Cookies.set("pch_user", JSON.stringify({ username: "admin", role: "Admin" }), { expires: 1 });
-        router.push("/claims");
-        return;
-      }
-      setError(err?.response?.data?.detail || "Invalid credentials");
+      setError(err?.response?.data?.detail || "Invalid username or password");
     } finally {
       setLoading(false);
     }
@@ -120,14 +113,6 @@ export default function LoginPage() {
             )}
           </button>
         </form>
-
-        {/* Demo Credentials Helper */}
-        <div className="mt-8 pt-6 border-t border-[#2B2B2B] text-center">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-800 text-[11px] font-medium text-gray-300 border border-neutral-700">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Demo: <strong>admin</strong> / <strong>pch2026</strong></span>
-          </div>
-        </div>
       </div>
     </div>
   );
